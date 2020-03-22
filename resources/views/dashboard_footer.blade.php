@@ -32,9 +32,38 @@
 <!-- Custom scripts for all pages-->
 <script src="/dashboard/js/sb-admin-2.min.js"></script>
 
-<!-- Page level plugins -->
-<script src="/dashboard/vendor/chart.js/Chart.min.js"></script>
+<!-- Angular JS -->
+<script src="/plugins/angularjs/1_5_0/angular.js"></script>
+<script src="/plugins/angularjs/1_5_0/angular-route.js"></script>
+<script language="JavaScript">
+    var ang = angular.module('app', ['ngRoute']);
+    ang.config(function($routeProvider){
+        $routeProvider
+            .when('/', {
+                caption 	: 'Summary',
+                controller 	: 'home',
+                templateUrl	: '/userdashboard'
+            })
+            .otherwise({ redirectTo : '/' });
+            /*.when('/about', {
+                caption 	: 'About Us',
+                controller 	: 'about',
+                templateUrl	: 'views/about.html'
+            })
+            .when('/testimonial', {
+                caption 	: 'Testimonial',
+                controller 	: 'testimonial',
+                templateUrl	: 'views/testimonial.html'
+            })
+            .otherwise({ redirectTo : '/home_user' });*/
+    });
+    ang.run(['$rootScope', function($rootScope){
+        $rootScope.$on('$routeChangeSuccess', function(e, curr, prev){
+            $rootScope.caption = curr.$$route.caption;
+        })
+    }]);
 
-<!-- Page level custom scripts -->
-<script src="/dashboard/js/demo/chart-area-demo.js"></script>
-<script src="/dashboard/js/demo/chart-pie-demo.js"></script>
+    ang.controller('home', function($scope){});
+    ang.controller('about', function($scope){});
+    ang.controller('testimonial', function($scope){});
+</script>

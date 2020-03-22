@@ -36,3 +36,9 @@ Route::post('/loginPost', 'User@loginPost');
 Route::get('/register', 'User@register');
 Route::post('/registerPost', 'User@registerPost');
 Route::get('/logout', 'User@logout');*/
+
+/*AngularJS Routes*/
+Route::get('/userdashboard', function() {
+    return view('dashboard');
+});
+/*END Angular JS Routes*/
