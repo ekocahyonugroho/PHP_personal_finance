@@ -86,4 +86,18 @@ class UserAction extends Controller
             return redirect('/register')->with('alert',$e->getMessage());
         }
     }
+
+    public function addSetCategoryPost(Request $request){
+        try {
+            $this->validate($request, [
+                'name' => 'required|min:4'
+            ]);
+
+            return redirect('/setCategory')
+                ->with('alert-success', 'Category has been added.')
+                ->with('after-update', 'true');
+        }catch(\Exception $e){
+            return redirect('/setCategory')->with('alert',$e->getMessage());
+        }
+    }
 }
