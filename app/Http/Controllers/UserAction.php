@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\ModelFamily;
+use App\ModelRoutine;
+use App\ModelTransactionCategory;
 use App\ModelUser;
+use App\ModelData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -87,11 +90,48 @@ class UserAction extends Controller
         }
     }
 
+    public function getIdFamily(){
+        $id = Session::get('uid');
+        $data = ModelUser::where('id', $id);
+
+        $id_family = $data->value('id_family');
+
+        return $id_family;
+    }
+
+    public function setCategoryPage(){
+        $id_family = $this->getIdFamily();
+
+        $dataRoutine = ModelRoutine::where('id_family', $id_family)->get();
+        $dataCategory = ModelTransactionCategory::where('id_family', $id_family)->get();
+        return view('setcategory', ['dataRoutine' => $dataRoutine, 'dataCategory' => $dataCategory]);
+    }
+
     public function addSetCategoryPost(Request $request){
         try {
             $this->validate($request, [
                 'name' => 'required|min:4'
             ]);
+
+            $idRoutine = 0;
+            $isRoutine = '0';
+
+            if($request->isRoutine == '1'){
+                $idRoutine = $request->idRoutine;
+                $isRoutine = '1';
+            }
+
+            $data = new ModelData();
+
+            $data->table = 'cash_category';
+
+            $data->id_family = $this->getIdFamily();
+            $data->is_routine = $isRoutine;
+            $data->id_routine = $idRoutine;
+            $data->type = $request->type;
+            $data->category_name = $request->name;
+
+            $data->save();
 
             return redirect('/setCategory')
                 ->with('alert-success', 'Category has been added.')

@@ -31,9 +31,7 @@ Route::get('/logout', function() {
 
 Route::get('/register', 'UserAction@register');
 Route::get('/home_user', 'UserAction@index');
-Route::get('/setCategory', function(){
-    return view('setcategory');
-});
+Route::get('/setCategory', 'UserAction@setCategoryPage');
 
 // POST DATA
 Route::post('/loginPost', 'UserAction@loginPost');
